@@ -1,8 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1500" height="320" viewBox="0 0 1500 320" preserveAspectRatio="none">
 <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#141a45"/><stop offset=".5" stop-color="#1e1b5c"/><stop offset="1" stop-color="#05050d"/></linearGradient>
 <radialGradient id="nebula"><stop stop-color="#6b3fa0" stop-opacity=".55"/><stop offset=".45" stop-color="#4b2a7a" stop-opacity=".35"/><stop offset="1" stop-color="#4b2a7a" stop-opacity="0"/></radialGradient>
-<linearGradient id="fade" x2="0" y2="1"><stop stop-color="#000" stop-opacity="0"/><stop offset=".38" stop-color="#000" stop-opacity=".08"/><stop offset=".77" stop-color="#000" stop-opacity=".8"/><stop offset="1" stop-color="#000"/></linearGradient>
+<linearGradient id="fade" x2="0" y2="1"><stop stop-color="#fff"/><stop offset=".38" stop-color="#fff" stop-opacity=".92"/><stop offset=".77" stop-color="#fff" stop-opacity=".2"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
 <filter id="soft" x="-.3" y="-.5" width="1.6" height="2"><feGaussianBlur stdDeviation="12"/></filter></defs>
+<mask id="header"><path fill="url(#fade)" d="M0 0h1500v320H0z"/></mask>
+<g mask="url(#header)">
 <path fill="url(#sky)" d="M0 0h1500v320H0z"/>
 <ellipse cx="1150" cy="65" rx="480" ry="195" fill="url(#nebula)"/>
 <ellipse cx="980" cy="100" rx="290" ry="95" fill="url(#nebula)" opacity=".45"/>
@@ -107,4 +109,4 @@
 <path transform="translate(190 71)" fill="#fff" opacity=".85" d="M0 -7 1.4 -1.4 7 0 1.4 1.4 0 7 -1.4 1.4 -7 0 -1.4 -1.4Z"/>
 <path transform="translate(835 119)" fill="#fff" opacity=".85" d="M0 -6 1.4 -1.4 6 0 1.4 1.4 0 6 -1.4 1.4 -6 0 -1.4 -1.4Z"/>
 <path transform="translate(1290 93)" fill="#fff" opacity=".85" d="M0 -8 1.4 -1.4 8 0 1.4 1.4 0 8 -1.4 1.4 -8 0 -1.4 -1.4Z"/>
-<path fill="url(#fade)" d="M0 0h1500v320H0z"/></svg>
+</g></svg>

@@ -2,11 +2,11 @@
 @import url("Night Sky/tokens.css");
 
 .app {
-  background-color: @night_black;
-  background-image: url("Night Sky/sky.svg");
+  background-color: @night_canvas;
+  background-image: url("Night Sky/cat.png"), url("Night Sky/panda.png"), url("Night Sky/fox.png"), url("Night Sky/sky.svg"), linear-gradient(145deg, @night_canvas, @night_depth);
   background-repeat: no-repeat;
-  background-position: center top;
-  background-size: 100% 160px;
+  background-position: 2% 12px, 50% 48px, 98% 12px, center top, center;
+  background-size: 180px 120px, 150px 100px, 180px 120px, 100% 160px, 100% 100%;
   border: 1px solid @night_border;
   border-radius: 16px;
   padding-top: 160px;

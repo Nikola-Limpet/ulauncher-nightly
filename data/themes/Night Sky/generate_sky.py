@@ -29,15 +29,17 @@ def generate() -> str:
         ),
         (
             '<linearGradient id="fade" x2="0" y2="1">'
-            '<stop stop-color="#000" stop-opacity="0"/>'
-            '<stop offset=".38" stop-color="#000" stop-opacity=".08"/>'
-            '<stop offset=".77" stop-color="#000" stop-opacity=".8"/>'
-            '<stop offset="1" stop-color="#000"/></linearGradient>'
+            '<stop stop-color="#fff"/>'
+            '<stop offset=".38" stop-color="#fff" stop-opacity=".92"/>'
+            '<stop offset=".77" stop-color="#fff" stop-opacity=".2"/>'
+            '<stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>'
         ),
         (
             '<filter id="soft" x="-.3" y="-.5" width="1.6" height="2">'
             '<feGaussianBlur stdDeviation="12"/></filter></defs>'
         ),
+        f'<mask id="header"><path fill="url(#fade)" d="M0 0h{WIDTH}v{HEIGHT}H0z"/></mask>',
+        '<g mask="url(#header)">',
         f'<path fill="url(#sky)" d="M0 0h{WIDTH}v{HEIGHT}H0z"/>',
         '<ellipse cx="1150" cy="65" rx="480" ry="195" fill="url(#nebula)"/>',
         '<ellipse cx="980" cy="100" rx="290" ry="95" fill="url(#nebula)" opacity=".45"/>',
@@ -55,7 +57,7 @@ def generate() -> str:
             f'<path transform="translate({x} {y})" fill="#fff" opacity=".85" '
             f'd="M0 -{size} 1.4 -1.4 {size} 0 1.4 1.4 0 {size} -1.4 1.4 -{size} 0 -1.4 -1.4Z"/>'
         )
-    parts.append(f'<path fill="url(#fade)" d="M0 0h{WIDTH}v{HEIGHT}H0z"/></svg>')
+    parts.append("</g></svg>")
     return "\n".join(parts) + "\n"
 
 
