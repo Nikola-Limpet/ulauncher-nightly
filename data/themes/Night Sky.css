@@ -1,0 +1,48 @@
+/* Night Sky. Assets and shared palette live in the adjacent theme directory. */
+@import url("Night Sky/tokens.css");
+
+.app {
+  background-color: @night_black;
+  background-image: url("Night Sky/sky.svg");
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: 100% 160px;
+  border: 1px solid @night_border;
+  border-radius: 16px;
+  padding-top: 160px;
+  padding-bottom: 10px;
+  color: @night_text;
+  font-family: Inter, "Noto Sans", sans-serif;
+  font-size: 14px;
+}
+.input {
+  font-family: "JetBrains Mono", "DejaVu Sans Mono", monospace;
+  font-size: 22px;
+  color: @night_text;
+  caret-color: @night_accent;
+  padding: 4px 0 8px;
+  border-bottom: 1px solid transparent;
+}
+.input:focus { border-bottom-color: alpha(@night_accent, 0.5); }
+.input selection { background-color: @night_accent; color: @night_white; }
+.input image { color: @night_icon; }
+.result-box { padding: 0 12px; }
+.item-frame { margin: 3px 0; }
+.item-box { border-radius: 999px; padding: 7px 0; }
+.item-box:hover { background-color: @night_hover; }
+.selected.item-box { background-color: @night_accent; }
+.item-text, .item-name { color: @night_text; }
+.item-name { font-size: 15px; }
+.small-result-item .item-name { font-size: 14px; }
+.item-descr, .item-shortcut { color: @night_secondary; font-size: 12px; }
+.item-highlight { color: @night_white; font-weight: 600; }
+.selected.item-box .item-text,
+.selected.item-box .item-name,
+.selected.item-box .item-highlight,
+.selected.item-box .item-shortcut { color: @night_white; }
+.prefs-btn { color: @night_icon; border-radius: 999px; padding: 8px; }
+.prefs-btn:hover, .prefs-btn:focus { background-color: @night_hover; }
+scrolledwindow { border: none; }
+scrollbar { background-color: transparent; }
+scrollbar slider { background-color: @night_border; border-radius: 999px; min-width: 4px; }
+scrollbar slider:hover { background-color: @night_accent; }
