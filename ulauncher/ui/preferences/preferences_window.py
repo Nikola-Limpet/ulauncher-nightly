@@ -1,17 +1,23 @@
 from __future__ import annotations
 
+import logging
 from typing import TYPE_CHECKING, Any, cast
 
 from gi.repository import Gdk, Gtk
 
 from ulauncher import paths
+from ulauncher.gi import GLib
 from ulauncher.ui.helpers.system_theme import SystemThemeWatcher
+from ulauncher.ui.helpers.theme import Theme
 from ulauncher.ui.preferences.views import BaseView, styled
 from ulauncher.ui.preferences.views.about import AboutView
 from ulauncher.ui.preferences.views.extensions import ExtensionsView
 from ulauncher.ui.preferences.views.help import HelpView
 from ulauncher.ui.preferences.views.preferences import PreferencesView
 from ulauncher.ui.preferences.views.shortcuts import ShortcutsView
+from ulauncher.utils.settings import Settings
+
+logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
     from ulauncher.ui.app import UlauncherApp
@@ -41,6 +47,7 @@ class PreferencesWindow(Gtk.ApplicationWindow):
         self.views: dict[str, BaseView] = {}
         self._theme_watcher: SystemThemeWatcher | None = None
         self._css_provider: Gtk.CssProvider | None = None
+        self._theme_css_provider: Gtk.CssProvider | None = None
 
         self._watch_system_theme()
 
@@ -73,7 +80,10 @@ class PreferencesWindow(Gtk.ApplicationWindow):
         app = cast("UlauncherApp | None", self.get_application())
         for name, view_class in VIEW_CONFIG:
             if view_class is PreferencesView:
-                view: BaseView = PreferencesView(external_backend=app.external_backend if app else None)
+                view: BaseView = PreferencesView(
+                    external_backend=app.external_backend if app else None,
+                    on_theme_changed=self._apply_preferences_theme,
+                )
             else:
                 view = view_class()
             self._add_view(view, name)
@@ -161,6 +171,23 @@ class PreferencesWindow(Gtk.ApplicationWindow):
             Gtk.StyleContext.add_provider_for_screen(
                 screen, self._css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
             )
+        self._apply_preferences_theme()
+
+    def _apply_preferences_theme(self) -> None:
+        screen = self.get_screen()
+        if self._theme_css_provider:
+            Gtk.StyleContext.remove_provider_for_screen(screen, self._theme_css_provider)
+            self._theme_css_provider = None
+        theme = Theme.load(Settings.load().theme_name)
+        if css_path := theme.get_companion_css_path("preferences"):
+            provider = Gtk.CssProvider()
+            try:
+                provider.load_from_path(str(css_path))
+            except (OSError, GLib.Error):
+                logger.exception("Could not load preferences styling for %s", theme.name)
+                return
+            self._theme_css_provider = provider
+            Gtk.StyleContext.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION + 1)
 
     def _watch_system_theme(self) -> None:
         self._theme_watcher = SystemThemeWatcher(self._apply_system_theme)
@@ -175,3 +202,5 @@ class PreferencesWindow(Gtk.ApplicationWindow):
             self._theme_watcher.disconnect()
         if self._css_provider and (screen := Gdk.Screen.get_default()):
             Gtk.StyleContext.remove_provider_for_screen(screen, self._css_provider)
+        if self._theme_css_provider and (screen := Gdk.Screen.get_default()):
+            Gtk.StyleContext.remove_provider_for_screen(screen, self._theme_css_provider)

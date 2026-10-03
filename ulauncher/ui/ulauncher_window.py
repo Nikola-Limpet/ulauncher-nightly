@@ -32,6 +32,7 @@ _use_fullscreen_to_position = DESKTOP_ID == "GNOME" and not is_x11_compatible()
 
 class UlauncherWindow(Gtk.ApplicationWindow):
     _css_provider: Gtk.CssProvider | None = None
+    _popup_css_provider: Gtk.CssProvider | None = None
     is_dragging = False
     is_focused = False
     # focus-out events before deferred_init completes are WM noise, not user intent, and
@@ -175,6 +176,7 @@ class UlauncherWindow(Gtk.ApplicationWindow):
         self.prompt_input.connect("key-press-event", self.on_input_key_press)
         self.connect("draw", self.on_initial_draw)
         self.prefs_btn.connect("clicked", lambda *_: self.get_app().show_preferences())
+        self.connect("destroy", self._clear_popup_styling)
 
     def apply_styling(self) -> None:
         """
@@ -188,9 +190,6 @@ class UlauncherWindow(Gtk.ApplicationWindow):
         self.theme_root.get_style_context().add_class("app")
         self.prompt_input.get_style_context().add_class("input")
         self.prefs_btn.get_style_context().add_class("prefs-btn")
-        prefs_icon_surface = load_icon_surface(f"{paths.ASSETS}/icons/gear.svg", 16, self.get_scale_factor())
-        self.prefs_btn.set_image(Gtk.Image.new_from_surface(prefs_icon_surface))
-
         self.apply_theme()
         self.set_opacity(1)
 
@@ -378,10 +377,31 @@ class UlauncherWindow(Gtk.ApplicationWindow):
                 except (OSError, GLib.Error, ValueError, re.error):
                     logger.exception('Could not apply fallback theme "%s"', theme.name)
         self.apply_css(self)
+        prefs_icon = theme.get_css_path().with_suffix("") / "settings.svg"
+        icon_path = str(prefs_icon) if prefs_icon.is_file() else f"{paths.ASSETS}/icons/gear.svg"
+        prefs_icon_surface = load_icon_surface(icon_path, 16, self.get_scale_factor())
+        self.prefs_btn.set_image(Gtk.Image.new_from_surface(prefs_icon_surface))
+        self._clear_popup_styling()
+        if popup_path := theme.get_companion_css_path("popups"):
+            provider = Gtk.CssProvider()
+            try:
+                provider.load_from_path(str(popup_path))
+            except (OSError, GLib.Error):
+                logger.exception("Could not load popup styling for %s", theme.name)
+            else:
+                self._popup_css_provider = provider
+                Gtk.StyleContext.add_provider_for_screen(
+                    self.get_screen(), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION + 1
+                )
         logger.info('Applying theme "%s"', theme.name)
         visual = self.get_screen().get_rgba_visual()
         if visual:
             self.set_visual(visual)
+
+    def _clear_popup_styling(self, *_args: Any) -> None:
+        if self._popup_css_provider:
+            Gtk.StyleContext.remove_provider_for_screen(self.get_screen(), self._popup_css_provider)
+            self._popup_css_provider = None
 
     def get_layout_size(self) -> Gdk.Rectangle | None:
         """The monitor size to lay the window out for"""
@@ -403,8 +423,9 @@ class UlauncherWindow(Gtk.ApplicationWindow):
 
     def update_results_max_height(self) -> None:
         if layout_size := self.get_layout_size():
-            max_height = layout_size.height * 0.8 - self.prompt.get_allocated_height()
-            self.results_view.set_max_height(int(max_height))
+            padding = self.theme_root.get_style_context().get_padding(Gtk.StateFlags.NORMAL)
+            max_height = layout_size.height * 0.8 - self.prompt.get_allocated_height() - padding.top - padding.bottom
+            self.results_view.set_max_height(max(1, int(max_height)))
 
     def position_window(self) -> None:
         if layout_size := self.get_layout_size():

@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from typing import Literal
 
 import pytest
 
@@ -226,3 +227,18 @@ def test_get_theme_source__installed_without_state__returns_unknown(
     monkeypatch.setattr(paths, "THEMES_STATE", str(tmp_path / "theme-state"))
 
     assert get_theme_source(Theme(name="dark", base_path=str(repo_dir))) == "Unknown"
+
+
+@pytest.mark.parametrize("companion", ["preferences", "popups"])
+def test_companion_stylesheet_is_optional_and_not_a_separate_theme(
+    user_themes: Path, companion: Literal["preferences", "popups"]
+) -> None:
+    (user_themes / "Night Sky.css").write_text(".app { color: white; }")
+    theme = get_themes()["Night Sky"]
+    assert theme.get_companion_css_path(companion) is None
+    assets = user_themes / "Night Sky"
+    assets.mkdir()
+    css_path = assets / f"{companion}.css"
+    css_path.write_text("window { color: white; }")
+    assert theme.get_companion_css_path(companion) == css_path
+    assert list(get_themes()) == ["Night Sky"]

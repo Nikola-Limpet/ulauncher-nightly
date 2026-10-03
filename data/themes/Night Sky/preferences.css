@@ -1,0 +1,56 @@
+@import url("tokens.css");
+
+/* Active only while this theme's preferences window is open. No GTK reset. */
+window, dialog, .background, .view-container, viewport, list, treeview.view {
+  background-color: @night_black;
+  color: @night_text;
+  font-family: Inter, "Noto Sans", sans-serif;
+}
+headerbar, .preferences-header {
+  background-image: none;
+  background-color: @night_surface;
+  color: @night_text;
+  border-color: @night_border;
+  box-shadow: none;
+}
+label { color: inherit; }
+.preferences-setting-description, .dim-label, .sidebar-item-description { color: @night_secondary; }
+button, entry, spinbutton, combobox button {
+  background-image: none;
+  background-color: @night_surface;
+  color: @night_text;
+  border: 1px solid @night_border;
+  border-radius: 16px;
+  box-shadow: none;
+  text-shadow: none;
+  -gtk-icon-shadow: none;
+}
+button:hover, row:hover { background-color: @night_hover; }
+button:checked, button:active, button.suggested-action, row:selected, treeview.view:selected,
+switch:checked, check:checked, radio:checked {
+  background-image: none;
+  background-color: @night_accent;
+  color: @night_white;
+  border-color: @night_accent;
+}
+entry:focus, button:focus, switch:focus {
+  border-color: @night_accent;
+  outline-color: @night_accent;
+  box-shadow: 0 0 0 1px alpha(@night_accent, 0.5);
+}
+entry selection { background-color: @night_accent; color: @night_white; }
+button:disabled, entry:disabled { color: @night_secondary; }
+button image { color: @night_icon; }
+switch, check, radio { background-color: @night_surface; border-color: @night_border; }
+switch slider { background-image: none; background-color: @night_text; border-color: @night_border; }
+separator { background-color: @night_border; }
+menu, menuitem, popover, tooltip, tooltip label {
+  background-color: @night_surface;
+  color: @night_text;
+  border-color: @night_border;
+  text-shadow: none;
+}
+menuitem:hover { background-color: @night_accent; color: @night_white; }
+scrollbar { background-color: @night_black; }
+scrollbar slider { background-color: @night_border; border: none; border-radius: 999px; }
+scrollbar slider:hover { background-color: @night_accent; }

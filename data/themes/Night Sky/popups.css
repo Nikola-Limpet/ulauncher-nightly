@@ -1,0 +1,11 @@
+@import url("tokens.css");
+
+/* Popup windows live outside the launcher's widget tree. */
+menu, menuitem, popover, tooltip, tooltip label {
+  background-color: @night_surface;
+  color: @night_text;
+  border-color: @night_border;
+  text-shadow: none;
+}
+menuitem:hover { background-color: @night_accent; color: @night_white; }
+menuitem:disabled { color: @night_secondary; }

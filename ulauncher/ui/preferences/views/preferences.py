@@ -83,10 +83,11 @@ def _description_label(text: str, *, warning: bool = False) -> Gtk.Label:
 class PreferencesView(BaseView):
     """General preferences page"""
 
-    def __init__(self, external_backend: str | None = None) -> None:
+    def __init__(self, external_backend: str | None = None, on_theme_changed: Callable[[], None] | None = None) -> None:
         super().__init__(orientation=Gtk.Orientation.VERTICAL)
         self.settings: Settings = Settings.load()
         self._external_backend = external_backend
+        self._theme_changed = on_theme_changed
         self.autostart_pref: SystemdController = SystemdController("ulauncher")
 
         scrolled = Gtk.ScrolledWindow(hscrollbar_policy=Gtk.PolicyType.NEVER)
@@ -453,6 +454,8 @@ class PreferencesView(BaseView):
         theme_name = combo.get_active_id()
         if theme_name:
             self.settings.save({"theme_name": theme_name})
+            if self._theme_changed:
+                self._theme_changed()
 
     def _on_screen_changed(self, combo: Gtk.ComboBox) -> None:
         screen = combo.get_active_id()

@@ -4,6 +4,7 @@ import json
 import logging
 import re
 from pathlib import Path
+from typing import Literal
 from urllib.parse import unquote, urlparse
 
 from ulauncher import paths
@@ -154,6 +155,11 @@ class Theme(JsonConf):
 
     def get_css_path(self) -> Path:
         return Path(self.base_path, f"{self.name}.css")
+
+    def get_companion_css_path(self, name: Literal["preferences", "popups"]) -> Path | None:
+        """Optional companion CSS, kept outside the selectable theme file glob."""
+        path = self.get_css_path().with_suffix("") / f"{name}.css"
+        return path if path.is_file() else None
 
     def get_shadow_css(self, shadow_size: int) -> str:
         return "\n.app { box-shadow: 0 0 " + str(max(0, shadow_size)) + "px rgba(0, 0, 0, 0.5); }"
