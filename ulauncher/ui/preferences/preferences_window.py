@@ -40,6 +40,7 @@ class PreferencesWindow(Gtk.ApplicationWindow):
         super().__init__(
             title="Ulauncher Preferences", window_position=Gtk.WindowPosition.CENTER, resizable=True, **kwargs
         )
+        self.get_style_context().add_class("ulauncher-preferences")
 
         self.set_default_size(WINDOW_DEFAULT_WIDTH, WINDOW_DEFAULT_HEIGHT)
 

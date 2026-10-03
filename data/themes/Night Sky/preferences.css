@@ -1,21 +1,47 @@
 @import url("tokens.css");
 
+/* Dialogs are separate native windows; the launcher is not a window.dialog. */
 /* Active only while this theme's preferences window is open. No GTK reset. */
-window, dialog, .background, .view-container, viewport, list, treeview.view {
+.ulauncher-preferences,
+window.dialog,
+.ulauncher-preferences .view-container,
+window.dialog .view-container,
+.ulauncher-preferences viewport,
+window.dialog viewport,
+.ulauncher-preferences list,
+window.dialog list,
+.ulauncher-preferences treeview.view,
+window.dialog treeview.view {
   background-color: @night_black;
   color: @night_text;
   font-family: Inter, "Noto Sans", sans-serif;
 }
-headerbar, .preferences-header {
+.ulauncher-preferences headerbar,
+window.dialog headerbar,
+.ulauncher-preferences .preferences-header,
+window.dialog .preferences-header {
   background-image: none;
   background-color: @night_surface;
   color: @night_text;
   border-color: @night_border;
   box-shadow: none;
 }
-label { color: inherit; }
-.preferences-setting-description, .dim-label, .sidebar-item-description { color: @night_secondary; }
-button, entry, spinbutton, combobox button {
+.ulauncher-preferences label,
+window.dialog label { color: inherit; }
+.ulauncher-preferences .preferences-setting-description,
+window.dialog .preferences-setting-description,
+.ulauncher-preferences .dim-label,
+window.dialog .dim-label,
+.ulauncher-preferences .sidebar-item-description,
+window.dialog .sidebar-item-description { color: @night_secondary; }
+.ulauncher-preferences button,
+window.dialog button,
+.ulauncher-preferences entry,
+window.dialog entry,
+.ulauncher-preferences spinbutton,
+window.dialog spinbutton,
+.ulauncher-preferences combobox button,
+window.dialog combobox button {
   background-image: none;
   background-color: @night_surface;
   color: @night_text;
@@ -25,25 +51,59 @@ button, entry, spinbutton, combobox button {
   text-shadow: none;
   -gtk-icon-shadow: none;
 }
-button:hover, row:hover { background-color: @night_hover; }
-button:checked, button:active, button.suggested-action, row:selected, treeview.view:selected,
-switch:checked, check:checked, radio:checked {
+.ulauncher-preferences button:hover,
+window.dialog button:hover,
+.ulauncher-preferences row:hover,
+window.dialog row:hover { background-color: @night_hover; }
+.ulauncher-preferences button:checked,
+window.dialog button:checked,
+.ulauncher-preferences button:active,
+window.dialog button:active,
+.ulauncher-preferences button.suggested-action,
+window.dialog button.suggested-action,
+.ulauncher-preferences row:selected,
+window.dialog row:selected,
+.ulauncher-preferences treeview.view:selected,
+window.dialog treeview.view:selected,
+.ulauncher-preferences switch:checked,
+window.dialog switch:checked,
+.ulauncher-preferences check:checked,
+window.dialog check:checked,
+.ulauncher-preferences radio:checked,
+window.dialog radio:checked {
   background-image: none;
   background-color: @night_accent;
   color: @night_white;
   border-color: @night_accent;
 }
-entry:focus, button:focus, switch:focus {
+.ulauncher-preferences entry:focus,
+window.dialog entry:focus,
+.ulauncher-preferences button:focus,
+window.dialog button:focus,
+.ulauncher-preferences switch:focus,
+window.dialog switch:focus {
   border-color: @night_accent;
   outline-color: @night_accent;
   box-shadow: 0 0 0 1px alpha(@night_accent, 0.5);
 }
-entry selection { background-color: @night_accent; color: @night_white; }
-button:disabled, entry:disabled { color: @night_secondary; }
-button image { color: @night_icon; }
-switch, check, radio { background-color: @night_surface; border-color: @night_border; }
-switch slider { background-image: none; background-color: @night_text; border-color: @night_border; }
-separator { background-color: @night_border; }
+.ulauncher-preferences entry selection,
+window.dialog entry selection { background-color: @night_accent; color: @night_white; }
+.ulauncher-preferences button:disabled,
+window.dialog button:disabled,
+.ulauncher-preferences entry:disabled,
+window.dialog entry:disabled { color: @night_secondary; }
+.ulauncher-preferences button image,
+window.dialog button image { color: @night_icon; }
+.ulauncher-preferences switch,
+window.dialog switch,
+.ulauncher-preferences check,
+window.dialog check,
+.ulauncher-preferences radio,
+window.dialog radio { background-color: @night_surface; border-color: @night_border; }
+.ulauncher-preferences switch slider,
+window.dialog switch slider { background-image: none; background-color: @night_text; border-color: @night_border; }
+.ulauncher-preferences separator,
+window.dialog separator { background-color: @night_border; }
 menu, menuitem, popover, tooltip, tooltip label {
   background-color: @night_surface;
   color: @night_text;
@@ -51,6 +111,9 @@ menu, menuitem, popover, tooltip, tooltip label {
   text-shadow: none;
 }
 menuitem:hover { background-color: @night_accent; color: @night_white; }
-scrollbar { background-color: @night_black; }
-scrollbar slider { background-color: @night_border; border: none; border-radius: 999px; }
-scrollbar slider:hover { background-color: @night_accent; }
+.ulauncher-preferences scrollbar,
+window.dialog scrollbar { background-color: @night_black; }
+.ulauncher-preferences scrollbar slider,
+window.dialog scrollbar slider { background-color: @night_border; border: none; border-radius: 999px; }
+.ulauncher-preferences scrollbar slider:hover,
+window.dialog scrollbar slider:hover { background-color: @night_accent; }
